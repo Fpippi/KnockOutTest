@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista con Knockout.js</title>
+    <!-- Includi la libreria Knockout.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.2/knockout-min.js"></script>
+    <!-- Includi Bootstrap (opzionale) -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"
+      integrity="sha512-vs7+jbztHoMto5Yd/yinM4/y2DOkPLt0fATcN+j+G4ANY2z4faIzZIOMkpBmWdcxt+596FemCh9M18NUJTZwvw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2>Lista di elementi</h2>
+      <input
+        type="text"
+        data-bind="value: newItem, valueUpdate: 'afterkeydown'"
+        placeholder="Aggiungi nuovo elemento"
+      />
+      <button class="btn btn-primary" data-bind="click: addItem">
+        Aggiungi
+      </button>
+      <ul data-bind="foreach: items">
+        <li>
+          <span data-bind="text: name"></span>
+          <button
+            class="btn btn-danger btn-sm ml-2"
+            data-bind="click: $parent.removeItem"
+          >
+            Rimuovi
+          </button>
+        </li>
+      </ul>
+
+      <script>
+        function AppViewModel() {
+          var self = this;
+
+          // Array osservabile per tenere traccia degli elementi
+          self.items = ko.observableArray([
+            { name: "ciao1" },
+            { name: "ciao2" },
+          ]);
+
+          // Variabile osservabile per tenere traccia del nuovo elemento
+          self.newItem = ko.observable("");
+
+          // Funzione per aggiungere un nuovo elemento
+          self.addItem = function () {
+            if (self.newItem() !== "") {
+              self.items.push(self.newItem());
+              self.newItem(""); // Resetta il campo di input
+            }
+          };
+
+          // Funzione per rimuovere un elemento
+          self.removeItem = function (item) {
+            self.items.remove(item);
+          };
+        }
+
+        ko.applyBindings(new AppViewModel());
+      </script>
+    </div>
+  </body>
+</html>
