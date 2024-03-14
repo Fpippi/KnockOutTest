@@ -56,8 +56,9 @@
 
           // Funzione per aggiungere un nuovo elemento
           self.addItem = function () {
-            if (self.newItem() !== "") {
-              self.items.push(self.newItem());
+            var newItemValue = self.newItem();
+            if (newItemValue.trim() !== "") {
+              self.items.push({ name: newItemValue });
               self.newItem(""); // Resetta il campo di input
             }
           };
