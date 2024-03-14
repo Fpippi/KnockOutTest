@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List con Knockout.js</title>
+
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"
+    integrity="sha512-vs7+jbztHoMto5Yd/yinM4/y2DOkPLt0fATcN+j+G4ANY2z4faIzZIOMkpBmWdcxt+596FemCh9M18NUJTZwvw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2>Todo List</h2>
+      <input
+        type="text"
+        data-bind="value: newItem, valueUpdate: 'afterkeydown'"
+        placeholder="Aggiungi un nuovo task"
+      />
+      <button class="btn btn-primary" data-bind="click: addItem">
+        Aggiungi
+      </button>
+      <ul data-bind="foreach: items">
+        <li>
+          <input type="checkbox" data-bind="checked: completed" />
+          <span data-bind="text: task, css: { completed: completed }"></span>
+          <button
+            class="btn btn-danger btn-sm"
+            data-bind="click: $parent.removeItem"
+          >
+            Rimuovi
+          </button>
+        </li>
+      </ul>
+
+      <script>
+        function TodoItem(task) {
+          this.task = ko.observable(task);
+          this.completed = ko.observable(false);
+        }
+
+        function AppViewModel() {
+          var self = this;
+          self.items = ko.observableArray([
+            new TodoItem("Fare la spesa"),
+            new TodoItem("Studiare Knockout.js"),
+            new TodoItem("Fare esercizio"),
+          ]);
+          self.newItem = ko.observable("");
+
+          self.addItem = function () {
+            var task = self.newItem();
+            if (task.trim() !== "") {
+              self.items.push(new TodoItem(task));
+              self.newItem("");
+            }
+          };
+
+          self.removeItem = function (item) {
+            self.items.remove(item);
+          };
+        }
+
+        ko.applyBindings(new AppViewModel());
+      </script>
+    </div>
+  </body>
+</html>

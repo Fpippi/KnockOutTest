@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Picker con Knockout.js</title>
+
+    <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"
+      integrity="sha512-vs7+jbztHoMto5Yd/yinM4/y2DOkPLt0fATcN+j+G4ANY2z4faIzZIOMkpBmWdcxt+596FemCh9M18NUJTZwvw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2>Seleziona un colore</h2>
+      <ul data-bind="foreach: colors">
+        <li>
+          <span data-bind="text: $data, style: { color: $data }"></span>
+          <button
+            class="btn btn-primary"
+            data-bind="click: $parent.selectColor"
+          >
+            Seleziona
+          </button>
+        </li>
+      </ul>
+      <h3>
+        Colore selezionato:
+        <span
+          data-bind="text: selectedColor(), style: { color: selectedColor() }"
+        ></span>
+      </h3>
+
+      <script>
+        function AppViewModel() {
+          var self = this;
+          self.colors = ko.observableArray([
+            "red",
+            "blue",
+            "green",
+            "yellow",
+            "purple",
+          ]);
+          self.selectedColor = ko.observable("");
+
+          self.selectColor = function (color) {
+            self.selectedColor(color);
+          };
+        }
+
+        ko.applyBindings(new AppViewModel());
+      </script>
+    </div>
+  </body>
+</html>
